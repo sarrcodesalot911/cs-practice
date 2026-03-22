@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"
+    <title>Sarah's CS Journey</title>
+    <style>
+        .week-picker {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .week-picker select {
+      padding: 10px 16px;
+      border: 1px solid #fce7f3;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: Georgia, serif;
+      color: #2d2d2d;
+      background: white;
+      cursor: pointer;
+    }
+
+    .week-picker select:focus {
+      outline: none;
+      border-color: #f9a8d4;
+    }
+        .saved-notes-section {
+      margin-top: 32px;
+      margin-bottom: 40px;
+    }
+
+    .note-entry {
+      background: white;
+      border: 1px solid #fce7f3;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+
+    .note-date {
+      font-size: 12px;
+      color: #ec4899;
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .note-text {
+      font-size: 14px;
+      color: #2d2d2d;
+      line-height: 1.6;
+    }
+        .hours-section {
+            margin-top: 32px;
+            margin-bottom: 32px;
+        }
+        .hours-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .hours-input {
+            width: 80px;
+            padding: 10px;
+            border: 1px solid #fce7f3;
+            border-radius: 8px;
+            font-size: 16px;
+            text-align: center;
+            color: #2d2d2d;
+        }
+        .hours-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .save-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #ec4899, #3b82f6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .save-btn:hover {
+            opacity: 0.9;
+        }
+        .notes-section {
+            margin-bottom: 40px;
+        }
+        .notes-textarea {
+            width: 100%;
+            height: 120px;
+            padding: 14px;
+            border: 1px solid #fce7f3;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: Georgia, serif;
+            color: #2d2d2d;
+            resize: vertical;
+            margin-top: 12px;
+            margin-bottom: 12px;
+        }
+        .notes-textarea:focus {
+            outline: none;
+            border-color: #f9a8d4;
+        }
+        .saved-msg {
+            font-size: 13px;
+            color: #ec4899;
+            margin-top: 6px;
+        }
+        .main-content {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+        .section-title {
+            font-size: 22px;
+            color: #2d2d2d;
+            margin-bottom: 4px;
+        }
+        .section-subtitle {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 20px;
+        }
+        .task-card{
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: white;
+            border: 1px solid #fce7f3;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+        .task-card:hover {
+            border-color: #f9a8d4;
+            box-shadow: 0 2px 12px rgba(249, 168, 212, 0.2);
+        }
+        .task-checkbox {
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
+            cursor: pointer;
+            accent-color: #ec4899;
+        }
+        .task-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #2d2d2d;
+            margin-bottom: 4px;
+        }
+        .task-desc {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 6px;
+        }
+        .task-link {
+            font-size: 12px;
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .task-link:hover {
+            text-decoration: underline;
+        }
+        .task-done {
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+        .progress-section {
+            background: white;
+            padding: 24px 40px;
+            text-align: center;
+            border-bottom: 1px solid #fce7f3;
+        }
+        .progress-label {
+            font-size: 13px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 10px;
+        }
+        .progress-track {
+            background: #fce7f3;
+            border-radius: 999px;
+            height: 12px;
+            width: 80%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+        .progress-fill{
+            height: 100%;
+            width: 0%;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #ec4899, #3b82f6);
+        }
+        .progress-percent {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 12px;
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #fdf6f9;
+            font-family: Georgia, serif;
+            color: #2d2d2d
+        }
+        .header{
+            background: linear-gradient(135deg, #f9a8d4, #93c5fd);
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1{
+            font-size: 36px;
+            color: white;
+            margin-bottom: 8px;
+        }
+        .header p{
+            font-size: 16px;
+            color: white;
+            opacity: 0.9;
+        }
+        .stats-row{
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            padding: 32px 40px;
+            background: white;
+            border-bottom: 1px solid #fce7f3;
+        }
+        .stat-card{
+            text-align: center;
+            background: #fdf6f9;
+            border: 1px solid #fce7f3;
+            border-radius: 12px;
+            padding: 20px 32px;
+        }
+        .stat-number{
+            font-size: 36px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #ec4899, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .stat-label{
+            font-size: 13px;
+            color: #9ca3af;
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Sarah's CS Journey Tracker</h1>
+        <p>My path to University of Wollongong Dubai - September 2026</p>
+    </div>
+    <div class="progress-section">
+        <p class="progress-label">Progress to September 2026</p>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-percent" id="progress-percent">0% complete</p>
+    </div>
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-number" id="days-left">163</div>
+            <div class="stat-label">Days to uni</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="hours-total">0</div>
+            <div class="stat-label">Hours studied</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="streak">0</div>
+            <div class="stat-label">Day streak</div>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="week-picker">
+      <select id="day-select" onchange="updateTasks()">
+        <option value="Mon">Monday</option>
+        <option value="Tue">Tuesday</option>
+        <option value="Wed">Wednesday</option>
+        <option value="Thu">Thursday</option>
+        <option value="Fri">Friday</option>
+        <option value="Sat">Saturday</option>
+        <option value="Sun">Sunday</option>
+      </select>
+      <select id="week-select" onchange="updateTasks()">
+        <option value="1">Week 1 — Logic & Setup</option>
+        <option value="2">Week 2 — CS50 + Puzzles</option>
+        <option value="3">Week 3 — Algorithms</option>
+        <option value="4">Week 4 — Start Python</option>
+        <option value="5">Week 5 — Conditionals</option>
+        <option value="6">Week 6 — Loops</option>
+        <option value="7">Week 7 — Lists & Dicts</option>
+        <option value="8">Week 8 — Finish CS50</option>
+        <option value="9">Week 9 — Python Core</option>
+        <option value="10">Week 10 — If Statements</option>
+        <option value="11">Week 11 — Loops</option>
+        <option value="12">Week 12 — Functions</option>
+        <option value="13">Week 13 — Lists</option>
+        <option value="14">Week 14 — Dictionaries</option>
+        <option value="15">Week 15 — Files</option>
+        <option value="16">Week 16 — Build Week</option>
+        <option value="17">Week 17 — Modules</option>
+        <option value="18">Week 18 — CSV & JSON</option>
+        <option value="19">Week 19 — NumPy & Pandas</option>
+        <option value="20">Week 20 — Final Project</option>
+        <option value="21">Week 21 — What is AI?</option>
+        <option value="22">Week 22 — How ML Works</option>
+        <option value="23">Week 23 — AI Ethics</option>
+        <option value="24">Week 24 — Hands-on ML</option>
+        <option value="25">Week 25 — Portfolio</option>
+        <option value="26">Week 26 — Ready for Uni!</option>
+      </select>
+    </div>
+      </div>
+    </div>
+        <div class="tasks-section">
+            <h2 class="section-title">Today's Tasks</h2>
+            <p class="section-subtitle">Week 1 - Monday</p>
+            <div class="task-card" id="task-0">
+                <input type="checkbox" class="task-checkbox" onchange="toggleTask(0)">
+                <div class="task-info">
+                    <div class="task-title">CS50 Week 0</div>
+                    <div class="task-desc">Watch lecture on Scratch and computational thinking - 1 hr</div>
+                    <a class="task-link" href="https://cs50.harvard.edu/x/" target="_blank">cs50.harvard.edu/x</a>
+                </div>
+            </div>
+            <div class="task-card" id="task-1">
+                <input type="checkbox" class="task-checkbox" onchange="toggleTask(1)">
+                <div class="task-info">
+                    <div class="task-title">Logic Puzzles</div>
+                    <div class="task-desc">Brilliant.org - logic course, first 5 problems - 45mins</div>
+                    <a class="task-link" href="https://brilliant.org" target="_blank">brilliant.org</a>
+                </div>
+            </div>
+        </div>
+        <div class="hours-section">
+            <h2 class="section-title">Hours Studied Today</h2>
+            <div class="hours-row">
+                <input type="number" id="hours-input" min="0" max="12" step="0.5" placeholder="0" class="hours-input">
+                <span class="hours-label">hours today</span>
+                <button class="save-btn" onclick="saveHours()">Save</button>
+            </div>
+        </div>
+        <div class="notes-section">
+            <h2 class="section-title">What did I learn today?</h2>
+            <textarea id="notes-input" class="notes-textarea" placeholder="Write anything - a concept that clicked, somthing you found confusing, a project idea..."></textarea>
+            <button class="save-btn" onclick="saveNotes()">Save notes</button>
+            <p class="saved-msg" id="saved-msg"></p>
+        </div>
+        <div class="saved-notes-section">
+      <h2 class="section-title">Saved Notes</h2>
+      <div id="notes-list"></div>
+      </div>
+    </div>
+    <script>
+        const allTasks = {
+  '1': {
+    'Mon': [
+      {title:'CS50 Week 0',desc:'Watch lecture on Scratch & computational thinking — 1 hr',url:'https://cs50.harvard.edu/x/'},
+      {title:'Logic puzzles',desc:'Brilliant.org — Logic course, first 5 problems — 45 min',url:'https://brilliant.org'}
+    ],
+    'Tue': [{title:'Logic puzzles',desc:'Brilliant.org — 10 more problems — 45 min',url:'https://brilliant.org'}],
+    'Wed': [{title:'CS50 Week 1 intro',desc:'Start C basics — just watch — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Thu': [{title:'Brilliant.org',desc:'Continue logic exercises, 10 more problems — 45 min',url:'https://brilliant.org'}],
+    'Fri': [{title:'CS50 Problem Set 0',desc:'Build something in Scratch — 1 hr',url:'https://scratch.mit.edu'}],
+    'Sat': [{title:'Review + practice',desc:'Re-watch confusing parts, 15 Brilliant puzzles — 1.5 hr',url:'https://brilliant.org'}],
+    'Sun': [{title:'Plan next week',desc:'Light day — review what you learned — 30 min',url:''}]
+  },
+  '2': {
+    'Mon': [{title:'CS50 Week 1',desc:'Variables, data types, conditionals in C — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'Logic puzzles',desc:'15 min Brilliant daily — make it a habit — 45 min',url:'https://brilliant.org'}],
+    'Wed': [{title:'CS50 Week 2',desc:'Arrays and algorithms lecture — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Thu': [{title:'Pseudocode practice',desc:'Write steps for everyday tasks in plain English — 45 min',url:''}],
+    'Fri': [{title:'CS50 Problem Set 1',desc:'Attempt Mario and Cash problems — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Sat': [{title:'Problem set + Brilliant',desc:'Finish problem set, 20 more puzzles — 1.5 hr',url:'https://brilliant.org'}],
+    'Sun': [{title:'Weekly review',desc:'Write 3 things you learned this week — 30 min',url:''}]
+  },
+  '3': {
+    'Mon': [{title:'CS50 Week 2',desc:'Arrays, strings, command line arguments — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'CS50 Week 3',desc:'Algorithms — search and sort explained — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Wed': [{title:'Logic puzzles',desc:'Brilliant — push to harder problems — 45 min',url:'https://brilliant.org'}],
+    'Thu': [{title:'CS50 Problem Set 2',desc:'Caesar cipher or Substitution — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Fri': [{title:'Pseudocode drills',desc:'Write pseudocode for sorting a list of names — 1 hr',url:''}],
+    'Sat': [{title:'Problem sets + review',desc:'Finish problem sets, re-watch tricky parts — 1.5 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Sun': [{title:'Rest + light review',desc:'Watch a 3Blue1Brown maths video — 45 min',url:'https://www.youtube.com/@3blue1brown'}]
+  },
+  '4': {
+    'Mon': [{title:'CS50 Week 4',desc:'Memory and pointers — just watch, absorb — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'Python for Everybody Ch.1',desc:'Why Python? First program concepts — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Wed': [{title:'Brilliant logic',desc:'Daily 15 min + extra session — 45 min',url:'https://brilliant.org'}],
+    'Thu': [{title:'Python for Everybody Ch.2',desc:'Variables and expressions in Python — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Fri': [{title:'First Python file',desc:'Open VS Code, write hello.py and variables.py — 1 hr',url:''}],
+    'Sat': [{title:'Python practice',desc:'Rewrite CS50 exercises in Python — 1.5 hr',url:''}],
+    'Sun': [{title:'Push to GitHub',desc:'Commit all this week\'s files — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '5': {
+    'Mon': [{title:'CS50 Week 5',desc:'Data structures — stacks, queues, trees — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'Python Ch.3 — if/else',desc:'Teach the computer to make decisions — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Wed': [{title:'Python practice',desc:'Write 5 programs using if statements — 45 min',url:'https://www.w3schools.com/python/'}],
+    'Thu': [{title:'Python Ch.4 — functions',desc:'def, parameters, return values — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Fri': [{title:'Mini project',desc:'Build a simple grade calculator in Python — 1 hr',url:''}],
+    'Sat': [{title:'Brilliant + review',desc:'Logic puzzles + review CS50 Week 5 — 1.5 hr',url:'https://brilliant.org'}],
+    'Sun': [{title:'GitHub commit',desc:'Push all week\'s code, write README notes — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '6': {
+    'Mon': [{title:'CS50 Week 6',desc:'Python in CS50 — same concepts, Python syntax — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'Python Ch.5 — loops',desc:'for and while loops — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Wed': [{title:'Loop practice',desc:'10 exercises using loops on W3Schools — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Thu': [{title:'Python Ch.6 — strings',desc:'Slicing, methods, string formatting — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Fri': [{title:'Mini project',desc:'Word counter — count words in a sentence — 1 hr',url:''}],
+    'Sat': [{title:'Project + review',desc:'Improve your project, add more features — 1.5 hr',url:''}],
+    'Sun': [{title:'GitHub + rest',desc:'Commit code, take a proper break — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '7': {
+    'Mon': [{title:'CS50 Week 7',desc:'SQL and databases intro — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'Python Ch.7 — lists',desc:'Store multiple values in one variable — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Wed': [{title:'List practice',desc:'Build a shopping list program — 1 hr',url:''}],
+    'Thu': [{title:'Python Ch.8 — dictionaries',desc:'Key-value pairs — like a real dictionary — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Fri': [{title:'Mini project',desc:'Contact book — store names and numbers — 1 hr',url:''}],
+    'Sat': [{title:'CS50 Problem Set 7',desc:'Attempt the SQL problem set — 1.5 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Sun': [{title:'Review + GitHub',desc:'Commit all files, review the week — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '8': {
+    'Mon': [{title:'CS50 Week 8',desc:'HTML, CSS, JavaScript intro — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Tue': [{title:'CS50 final project plan',desc:'Design a small final project idea — 1 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Wed': [{title:'Python review',desc:'Go back and redo any confusing chapters — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Thu': [{title:'CS50 final project',desc:'Build and submit your CS50 final project — 1.5 hr',url:'https://cs50.harvard.edu/x/'}],
+    'Fri': [{title:'Python practice',desc:'10 mixed Python exercises on W3Schools — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Sat': [{title:'Phase 1 full review',desc:'Look back at all 8 weeks — what do you know? — 2 hr',url:''}],
+    'Sun': [{title:'Celebrate + plan',desc:'You finished Phase 1! Rest and prep for Phase 2 — 30 min',url:''}]
+  },
+  '9': {
+    'Mon': [{title:'Python for Everybody Ch.1',desc:'Why Python? Install and first program — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'Variables deep dive',desc:'Strings, integers, floats, booleans — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Wed': [{title:'Automate Ch.1',desc:'Python basics from Automate the Boring Stuff — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Type practice',desc:'Write programs converting between data types — 1 hr',url:''}],
+    'Fri': [{title:'Mini project',desc:'Temperature converter (Celsius to Fahrenheit) — 1 hr',url:''}],
+    'Sat': [{title:'Kaggle sign up',desc:'Sign up for Kaggle, explore the Python course — 1.5 hr',url:'https://www.kaggle.com/learn/python'}],
+    'Sun': [{title:'GitHub commit',desc:'Push all this week\'s files — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '10': {
+    'Mon': [{title:'Python Ch.3 — if/else',desc:'Teach the computer to make decisions — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'Conditionals practice',desc:'Write 8 programs using if/elif/else — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Wed': [{title:'Automate Ch.2',desc:'Flow control chapter — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Nested conditions',desc:'Practice if statements inside if statements — 1 hr',url:''}],
+    'Fri': [{title:'Quiz game',desc:'5 questions, score at the end — 1 hr',url:''}],
+    'Sat': [{title:'Improve quiz',desc:'Add difficulty levels to your quiz game — 1.5 hr',url:''}],
+    'Sun': [{title:'GitHub + review',desc:'Commit code, write what you learned — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '11': {
+    'Mon': [{title:'Python Ch.5 — loops',desc:'for loops, while loops, range() — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'Loop exercises',desc:'Print patterns, count down timers, sum calculators — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Wed': [{title:'Automate Ch.3 — functions',desc:'Define your own reusable code — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Number guessing game',desc:'Build using a while loop — 1 hr',url:''}],
+    'Fri': [{title:'Times table generator',desc:'Any number, any range using loops — 1 hr',url:''}],
+    'Sat': [{title:'Kaggle Python',desc:'Complete 2 lessons on Kaggle Python course — 1.5 hr',url:'https://www.kaggle.com/learn/python'}],
+    'Sun': [{title:'GitHub + rest',desc:'Commit everything, take a break — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '12': {
+    'Mon': [{title:'Python Ch.4 — functions',desc:'def, parameters, return values — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'Functions practice',desc:'Convert previous programs to use functions — 1 hr',url:''}],
+    'Wed': [{title:'Automate Ch.4 — lists',desc:'Lists chapter — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Full calculator',desc:'add/subtract/multiply/divide using functions — 1 hr',url:''}],
+    'Fri': [{title:'Refactor old code',desc:'Go back to hello.py and improve it — 1 hr',url:''}],
+    'Sat': [{title:'Kaggle + review',desc:'Kaggle Python lessons + review functions — 1.5 hr',url:'https://www.kaggle.com/learn/python'}],
+    'Sun': [{title:'GitHub commit',desc:'Push everything, tidy up your repo — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '13': {
+    'Mon': [{title:'Python Ch.7 — lists',desc:'Creating, accessing, modifying lists — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'List methods',desc:'.append(), .remove(), .sort(), len() — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Wed': [{title:'Automate Ch.5 — dictionaries',desc:'Structuring data with dicts — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'List exercises',desc:'10 list problems on W3Schools — 1 hr',url:'https://www.w3schools.com/python/'}],
+    'Fri': [{title:'To-do list app',desc:'Add, remove, view tasks — 1 hr',url:''}],
+    'Sat': [{title:'Improve to-do app',desc:'Add ability to mark tasks as done — 1.5 hr',url:''}],
+    'Sun': [{title:'GitHub + review',desc:'Commit to-do app, push to GitHub — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '14': {
+    'Mon': [{title:'Python Ch.8 — dictionaries',desc:'Key-value pairs, accessing, updating — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'Dictionary practice',desc:'Build a simple word frequency counter — 1 hr',url:''}],
+    'Wed': [{title:'Automate Ch.6 — strings',desc:'String manipulation deep dive — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Combine lists + dicts',desc:'Student grades tracker using both — 1 hr',url:''}],
+    'Fri': [{title:'Contact book',desc:'Name, phone, email stored in a dictionary — 1 hr',url:''}],
+    'Sat': [{title:'Kaggle Python — finish',desc:'Complete the Kaggle Python course final lessons — 1.5 hr',url:'https://www.kaggle.com/learn/python'}],
+    'Sun': [{title:'GitHub commit',desc:'Push all projects this week — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '15': {
+    'Mon': [{title:'Python Ch.9 — files',desc:'Reading and writing .txt files — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'File practice',desc:'Save your to-do list to a file so it persists — 1 hr',url:''}],
+    'Wed': [{title:'Automate Ch.8 — files',desc:'Reading and writing files chapter — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Error handling',desc:'try/except — handle crashes gracefully — 1 hr',url:''}],
+    'Fri': [{title:'Upgraded to-do app',desc:'Save tasks to file, load on startup — 1 hr',url:''}],
+    'Sat': [{title:'Project polish',desc:'Add error handling to all your projects — 1.5 hr',url:''}],
+    'Sun': [{title:'GitHub + review',desc:'Big commit — all improved projects — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '16': {
+    'Mon': [{title:'Review all concepts',desc:'Variables, loops, functions, lists, dicts, files — 1 hr',url:''}],
+    'Tue': [{title:'Quiz yourself',desc:'Write programs from scratch without notes — 1 hr',url:''}],
+    'Wed': [{title:'Expense tracker pt.1',desc:'Start building — add income/expenses — 1.5 hr',url:''}],
+    'Thu': [{title:'Expense tracker pt.2',desc:'Add categories and totals — 1.5 hr',url:''}],
+    'Fri': [{title:'Expense tracker pt.3',desc:'Save to file, load on startup — 1 hr',url:''}],
+    'Sat': [{title:'Code review',desc:'Read your own code — can you make it cleaner? — 1.5 hr',url:''}],
+    'Sun': [{title:'GitHub + celebrate',desc:'Phase 2 halfway point! — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '17': {
+    'Mon': [{title:'Python modules',desc:'import, os, random, datetime modules — 1 hr',url:'https://www.coursera.org/specializations/python'}],
+    'Tue': [{title:'Random module',desc:'Use random to build a dice roller app — 1 hr',url:''}],
+    'Wed': [{title:'Automate Ch.9 — files',desc:'Organising files with Python — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Datetime project',desc:'Build a days-until-university countdown — 1 hr',url:''}],
+    'Fri': [{title:'OS module',desc:'List files in a folder using Python — 1 hr',url:''}],
+    'Sat': [{title:'Kaggle Intro to ML',desc:'Sign up and start Kaggle\'s Intro to ML course — 1.5 hr',url:'https://www.kaggle.com/learn/intro-to-machine-learning'}],
+    'Sun': [{title:'GitHub commit',desc:'Push all this week\'s code — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '18': {
+    'Mon': [{title:'CSV files in Python',desc:'Read and write CSV with the csv module — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Tue': [{title:'CSV practice',desc:'Load a spreadsheet into Python, print rows — 1 hr',url:''}],
+    'Wed': [{title:'JSON in Python',desc:'json module — read/write JSON data — 1 hr',url:'https://automatetheboringstuff.com'}],
+    'Thu': [{title:'Kaggle Intro to ML',desc:'Complete 2 more lessons — 1 hr',url:'https://www.kaggle.com/learn/intro-to-machine-learning'}],
+    'Fri': [{title:'CSV grade reader',desc:'Load grades, find average — mini project — 1 hr',url:''}],
+    'Sat': [{title:'Google Colab intro',desc:'Open Colab, run your first notebook — 1.5 hr',url:'https://colab.research.google.com'}],
+    'Sun': [{title:'GitHub + review',desc:'Commit everything, review the week — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '19': {
+    'Mon': [{title:'NumPy intro',desc:'Arrays, maths operations — run in Colab — 1 hr',url:'https://colab.research.google.com'}],
+    'Tue': [{title:'NumPy practice',desc:'Create arrays, slice, perform calculations — 1 hr',url:'https://colab.research.google.com'}],
+    'Wed': [{title:'Pandas intro',desc:'DataFrames — the spreadsheet of Python — 1 hr',url:'https://www.kaggle.com/learn/pandas'}],
+    'Thu': [{title:'Pandas practice',desc:'Load a CSV into a DataFrame, filter rows — 1 hr',url:'https://www.kaggle.com/learn/pandas'}],
+    'Fri': [{title:'Kaggle Intro to ML',desc:'Complete 3 more lessons — 1.5 hr',url:'https://www.kaggle.com/learn/intro-to-machine-learning'}],
+    'Sat': [{title:'Colab data notebook',desc:'Build a data analysis notebook in Colab — 1.5 hr',url:'https://colab.research.google.com'}],
+    'Sun': [{title:'GitHub + rest',desc:'Save notebook to Drive, push Python files — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '20': {
+    'Mon': [{title:'Plan final project',desc:'Design a Python app using everything you know — 1 hr',url:''}],
+    'Tue': [{title:'Build pt.1',desc:'Core functionality — variables, functions, loops — 1.5 hr',url:''}],
+    'Wed': [{title:'Build pt.2',desc:'Add file saving and error handling — 1.5 hr',url:''}],
+    'Thu': [{title:'Build pt.3',desc:'Add data — use lists, dicts, maybe CSV — 1 hr',url:''}],
+    'Fri': [{title:'Finish & polish',desc:'Clean up code, add comments, test it — 1 hr',url:''}],
+    'Sat': [{title:'Phase 2 review',desc:'Look back at all you\'ve built — it\'s a lot! — 1.5 hr',url:''}],
+    'Sun': [{title:'GitHub showcase',desc:'Push final project, write a README for it — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '21': {
+    'Mon': [{title:'Elements of AI Ch.1',desc:'What is AI? History and definitions — 1 hr',url:'https://elementsofai.com'}],
+    'Tue': [{title:'Elements of AI Ch.2',desc:'AI problem solving — search and games — 1 hr',url:'https://elementsofai.com'}],
+    'Wed': [{title:'Reflection notes',desc:'Write your own summary of what AI is — 45 min',url:''}],
+    'Thu': [{title:'Elements of AI Ch.3',desc:'Real world AI applications — 1 hr',url:'https://elementsofai.com'}],
+    'Fri': [{title:'3Blue1Brown Neural Nets',desc:'What is a neural network? — 1 hr',url:'https://www.youtube.com/@3blue1brown'}],
+    'Sat': [{title:'Kaggle Intro to ML',desc:'Finish the course if not done yet — 1.5 hr',url:'https://www.kaggle.com/learn/intro-to-machine-learning'}],
+    'Sun': [{title:'Colab exploration',desc:'Open a Kaggle notebook and explore the code — 30 min',url:'https://colab.research.google.com'}]
+  },
+  '22': {
+    'Mon': [{title:'Elements of AI Ch.4',desc:'Machine learning — how computers learn — 1 hr',url:'https://elementsofai.com'}],
+    'Tue': [{title:'3Blue1Brown Ch.2',desc:'Gradient descent explained visually — 1 hr',url:'https://www.youtube.com/@3blue1brown'}],
+    'Wed': [{title:'Kaggle Pandas',desc:'Start Kaggle\'s Pandas course — 1 hr',url:'https://www.kaggle.com/learn/pandas'}],
+    'Thu': [{title:'Elements of AI Ch.5',desc:'Neural networks chapter — 1 hr',url:'https://elementsofai.com'}],
+    'Fri': [{title:'Colab dataset',desc:'Load a dataset in Colab, explore with Pandas — 1 hr',url:'https://colab.research.google.com'}],
+    'Sat': [{title:'First ML model',desc:'Run the Kaggle house prices starter notebook — 1.5 hr',url:'https://www.kaggle.com'}],
+    'Sun': [{title:'Notes + GitHub',desc:'Write notes on what ML means to you — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '23': {
+    'Mon': [{title:'Elements of AI Ch.6',desc:'AI and society — ethics, bias, fairness — 1 hr',url:'https://elementsofai.com'}],
+    'Tue': [{title:'3Blue1Brown Ch.3',desc:'Backpropagation explained — 1 hr',url:'https://www.youtube.com/@3blue1brown'}],
+    'Wed': [{title:'Kaggle Pandas',desc:'Complete 3 more Pandas lessons — 1 hr',url:'https://www.kaggle.com/learn/pandas'}],
+    'Thu': [{title:'Elements of AI — finish',desc:'Complete the course and get your certificate! — 1 hr',url:'https://elementsofai.com'}],
+    'Fri': [{title:'Colab ML notebook',desc:'Train a simple model on a dataset of your choice — 1 hr',url:'https://colab.research.google.com'}],
+    'Sat': [{title:'Kaggle competitions',desc:'Explore beginner competitions — 1.5 hr',url:'https://www.kaggle.com/competitions'}],
+    'Sun': [{title:'Certificate + GitHub',desc:'Download your Elements of AI certificate! — 30 min',url:'https://elementsofai.com'}]
+  },
+  '24': {
+    'Mon': [{title:'Scikit-learn intro',desc:'The main Python ML library — explore — 1 hr',url:'https://scikit-learn.org/stable/'}],
+    'Tue': [{title:'First classifier',desc:'Train a model to classify flowers (Iris dataset) — 1 hr',url:'https://colab.research.google.com'}],
+    'Wed': [{title:'Kaggle Intro to ML review',desc:'Redo all lessons and exercises — 1 hr',url:'https://www.kaggle.com/learn/intro-to-machine-learning'}],
+    'Thu': [{title:'House prices model',desc:'Submit your first Kaggle competition entry — 1.5 hr',url:'https://www.kaggle.com'}],
+    'Fri': [{title:'Model evaluation',desc:'Learn accuracy, precision, what the scores mean — 1 hr',url:'https://scikit-learn.org/stable/'}],
+    'Sat': [{title:'Colab notebook polish',desc:'Document your model with text cells and comments — 1.5 hr',url:'https://colab.research.google.com'}],
+    'Sun': [{title:'GitHub + rest',desc:'Push notebooks, take a break — 30 min',url:'https://github.com/sarrcodesalot911'}]
+  },
+  '25': {
+    'Mon': [{title:'GitHub tidy up',desc:'Write READMEs for your 3 best projects — 1 hr',url:'https://github.com/sarrcodesalot911'}],
+    'Tue': [{title:'Python review',desc:'Redo your hardest programs from scratch — 1 hr',url:''}],
+    'Wed': [{title:'Colab showcase',desc:'Make your best notebook clean and presentable — 1 hr',url:'https://colab.research.google.com'}],
+    'Thu': [{title:'Kaggle profile',desc:'Complete your profile and add your certificate — 1 hr',url:'https://www.kaggle.com'}],
+    'Fri': [{title:'HackerRank problems',desc:'Try beginner Python coding problems — 1.5 hr',url:'https://www.hackerrank.com/domains/python'}],
+    'Sat': [{title:'Full review day',desc:'Go through all 6 months — what do you know? — 1.5 hr',url:''}],
+    'Sun': [{title:'Rest + celebrate',desc:'Almost there! One week left — 30 min',url:''}]
+  },
+  '26': {
+    'Mon': [{title:'UOWD prep',desc:'Look up your first semester modules online — 1 hr',url:'https://www.uowdubai.ac.ae'}],
+    'Tue': [{title:'Python final review',desc:'Variables, loops, functions, files — all of it — 1 hr',url:''}],
+    'Wed': [{title:'Tools check',desc:'VS Code, Python, Git — make sure all work perfectly — 1 hr',url:''}],
+    'Thu': [{title:'Final project',desc:'Build one last thing — anything you want! — 1 hr',url:''}],
+    'Fri': [{title:'GitHub final push',desc:'Make your GitHub look great for day 1 — 1 hr',url:'https://github.com/sarrcodesalot911'}],
+    'Sat': [{title:'Celebrate',desc:'You\'ve completed 6 months of prep. You\'re ready! — 1 hr',url:''}],
+    'Sun': [{title:'Rest',desc:'Relax. September is coming. You\'ve got this! — 30 min',url:''}]
+  }
+};
+
+    function updateTasks() {
+      const week = document.getElementById('week-select').value;
+      const day = document.getElementById('day-select').value;
+      const tasks = allTasks[week][day] || [];
+
+      const dayNames = { Mon:'Monday', Tue:'Tuesday', Wed:'Wednesday', Thu:'Thursday', Fri:'Friday', Sat:'Saturday', Sun:'Sunday' };
+      document.querySelector('.section-subtitle').textContent = 'Week ' + week + ' — ' + dayNames[day];
+
+      const container = document.querySelector('.tasks-section');
+      const existingCards = container.querySelectorAll('.task-card');
+      existingCards.forEach(c => c.remove());
+
+      tasks.forEach((task, i) => {
+        const urlPart = task.url ? `<a class="task-link" href="${task.url}" target="_blank">${task.url.replace('https://','')}</a>` : '';
+        const card = document.createElement('div');
+        card.className = 'task-card';
+        card.id = 'task-' + i;
+        card.innerHTML = `
+          <input type="checkbox" class="task-checkbox" onchange="toggleTask(${i})">
+          <div class="task-info">
+            <div class="task-title">${task.title}</div>
+            <div class="task-desc">${task.desc}</div>
+            ${urlPart}
+          </div>`;
+        container.appendChild(card);
+      });
+    }
+        function toggleTask(id) {
+            const card = document.getElementById('task-' + id);
+            const checkbox = card.querySelector('.task-checkbox');
+            if (checkbox.checked) {
+                card.classList.add('task-done');
+            } else {
+                card.classList.remove('task-done')
+            }
+        }
+        function saveHours() {
+      const hours = document.getElementById('hours-input').value;
+      localStorage.setItem('hoursStudied', hours);
+      document.getElementById('hours-total').textContent = hours;
+      document.getElementById('saved-msg').textContent = 'Hours saved!';
+      setTimeout(() => {
+        document.getElementById('saved-msg').textContent = '';
+      }, 2000);
+    }
+
+    function loadHours() {
+      const saved = localStorage.getItem('hoursStudied');
+      if (saved) {
+        document.getElementById('hours-input').value = saved;
+        document.getElementById('hours-total').textContent = saved;
+      }
+    }
+
+    loadHours();
+       function saveNotes() {
+      const notes = document.getElementById('notes-input').value;
+      if (notes.trim() === '') return;
+
+      const today = new Date().toLocaleDateString('en-GB', {
+        weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+      });
+
+      const saved = JSON.parse(localStorage.getItem('allNotes') || '[]');
+      saved.unshift({ date: today, text: notes });
+      localStorage.setItem('allNotes', JSON.stringify(saved));
+
+      document.getElementById('notes-input').value = '';
+      document.getElementById('saved-msg').textContent = 'Note saved!';
+      setTimeout(() => {
+        document.getElementById('saved-msg').textContent = '';
+      }, 2000);
+
+      displayNotes();
+    }
+
+    function displayNotes() {
+      const saved = JSON.parse(localStorage.getItem('allNotes') || '[]');
+      const list = document.getElementById('notes-list');
+      if (saved.length === 0) {
+        list.innerHTML = '<p style="color:#9ca3af;font-size:13px">No notes yet — write something and save it!</p>';
+        return;
+      }
+      list.innerHTML = saved.map(n => `
+        <div class="note-entry">
+          <div class="note-date">${n.date}</div>
+          <div class="note-text">${n.text}</div>
+        </div>
+      `).join('');
+    }
+
+    displayNotes();
+
+    function loadNotes() {
+      const saved = localStorage.getItem('dailyNotes');
+      if (saved) {
+        document.getElementById('notes-input').value = saved;
+      }
+    }
+
+    loadNotes();
+    </script>
+</body>
+</html>
