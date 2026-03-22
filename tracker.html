@@ -5,6 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"
     <title>Sarah's CS Journey</title>
     <style>
+        .quote-bar {
+      background: linear-gradient(135deg, #fdf2f8, #eff6ff);
+      padding: 14px 40px;
+      text-align: center;
+      border-bottom: 1px solid #fce7f3;
+    }
+
+    .quote-text {
+      font-size: 14px;
+      color: #9333ea;
+      font-style: italic;
+    }
         .week-picker {
       display: flex;
       gap: 12px;
@@ -260,6 +272,9 @@
     </style>
 </head>
 <body>
+    <div class="quote-bar">
+    <p class="quote-text" id="quote-text"></p>
+  </div>
     <div class="header">
         <h1>Sarah's CS Journey Tracker</h1>
         <p>My path to University of Wollongong Dubai - September 2026</p>
@@ -273,7 +288,7 @@
     </div>
     <div class="stats-row">
         <div class="stat-card">
-            <div class="stat-number" id="days-left">163</div>
+            <div class="stat-number" id="days-left">0</div>
             <div class="stat-label">Days to uni</div>
         </div>
         <div class="stat-card">
@@ -367,6 +382,31 @@
       </div>
     </div>
     <script>
+        const quotes = [
+      "Every expert was once a beginner. Keep going, Sarah!",
+      "You don't have to be great to start, but you have to start to be great.",
+      "The best time to start was yesterday. The next best time is now.",
+      "Code a little every day and watch yourself transform.",
+      "September 2026 is coming. You'll be ready.",
+      "Every line of code you write is a step closer to your dream.",
+      "Struggle is just growth in disguise. Keep pushing!",
+      "You already set up GitHub, wrote Python and built a web app. You're doing it!"
+    ];
+
+    function showQuote() {
+      const random = Math.floor(Math.random() * quotes.length);
+      document.getElementById('quote-text').textContent = quotes[random];
+    }
+
+    showQuote();
+        function updateDaysLeft() {
+      const today = new Date();
+      const uniDate = new Date('2026-09-01');
+      const diff = Math.ceil((uniDate - today) / (1000 * 60 * 60 * 24));
+      document.getElementById('days-left').textContent = diff;
+    }
+
+    updateDaysLeft();
         const allTasks = {
   '1': {
     'Mon': [
