@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Study Buddy</title>
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1>Study Buddy</h1>
+                <p>Paste your notes. Ask anything. </p>
+            </div>
+            <div class="notes-section">
+                <label>YOUR NOTES</label>
+                <textarea id="notes" placeholder="Paste your notes or topic here..."></textarea>
+                <div class="pills">
+                    <button class="pill">Summarise</button>
+                    <button class="pill">Quiz me</button>
+                    <button class="pill">Explain simply</button>
+                </div>
+            </div>
+            <div class="chat-box" id="chat-box">
+
+            </div>
+            <div class="input-row">
+                <input type="text" id="user-input" placeholder="Ask your Study Buddy..." />
+                <button id="send-btn">Send</button>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>
